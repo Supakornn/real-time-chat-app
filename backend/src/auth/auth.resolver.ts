@@ -19,10 +19,12 @@ export class AuthResolver {
                 confirmPassword: 'Passwords do not match',
             });
         }
+
         const { user } = await this.authService.register(
             registerDto,
             context.res,
         );
+
         return { user };
     }
 
