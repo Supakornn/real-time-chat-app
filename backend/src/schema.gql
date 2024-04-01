@@ -2,6 +2,52 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+input LoginDto {
+  email: String!
+  password: String!
+}
+
+type LoginResponse {
+  user: User!
+}
+
+type Mutation {
+  login(loginInput: LoginDto!): LoginResponse!
+  logout: String!
+  refreshToken: String!
+  register(registerInput: RegisterDto!): RegisterResponse!
+  updateProfile(file: Upload, fullname: String!): User!
+}
+
 type Query {
   hello: String!
+}
+
+input RegisterDto {
+  confirmPassword: String!
+  email: String!
+  fullname: String!
+  password: String!
+}
+
+type RegisterResponse {
+  user: User
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+type User {
+  avatarUrl: String
+  createdAt: DateTime
+  email: String!
+  fullname: String!
+  id: Float
+  password: String
+  updatedAt: DateTime
 }
