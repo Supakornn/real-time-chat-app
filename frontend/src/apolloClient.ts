@@ -40,7 +40,7 @@ let retryCount = 0;
 const maxRetry = 3;
 
 const wsLink = new WebSocketLink({
-  url: `ws://localhost:3000/graphql`,
+  uri: `ws://localhost:3000/graphql`,
   options: {
     reconnect: true,
     connectionParams: {

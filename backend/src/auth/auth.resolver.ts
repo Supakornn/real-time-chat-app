@@ -7,52 +7,49 @@ import { Request, Response } from 'express';
 
 @Resolver()
 export class AuthResolver {
-    constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) {}
 
-    @Query(() => String)
-    async hello() {
-        return 'hello';
+  @Query(() => String)
+  async hello() {
+    return 'hello';
+  }
+
+  @Mutation(() => RegisterResponse)
+  async register(
+    @Args('registerInput') registerDto: RegisterDto,
+    @Context() context: { res: Response },
+  ) {
+    if (registerDto.password !== registerDto.confirmPassword) {
+      throw new BadRequestException({
+        confirmPassword: 'Passwords do not match',
+      });
     }
 
-    @Mutation(() => RegisterResponse)
-    async register(
-        @Args('registerInput') registerDto: RegisterDto,
-        @Context() context: { res: Response },
-    ) {
-        if (registerDto.password !== registerDto.confirmPassword) {
-            throw new BadRequestException({
-                confirmPassword: 'Passwords do not match',
-            });
-        }
+    const { user } = await this.authService.register(registerDto, context.res);
 
-        const { user } = await this.authService.register(
-            registerDto,
-            context.res,
-        );
+    return { user };
+  }
 
-        return { user };
+  @Mutation(() => LoginResponse)
+  async login(
+    @Args('loginInput') loginDto: LoginDto,
+    @Context() context: { res: Response },
+  ) {
+    return this.authService.login(loginDto, context.res);
+  }
+
+  @Mutation(() => String)
+  async logout(@Context() Context: { res: Response }) {
+    return this.authService.logout(Context.res);
+  }
+
+  @Mutation(() => String)
+  async refreshToken(@Context() context: { req: Request; res: Response }) {
+    console.log('refreshToken');
+    try {
+      return this.authService.refreshToken(context.req, context.res);
+    } catch (err) {
+      throw new BadRequestException(err.message);
     }
-
-    @Mutation(() => LoginResponse)
-    async login(
-        @Args('loginInput') loginDto: LoginDto,
-        @Context() context: { res: Response },
-    ) {
-        return this.authService.login(loginDto, context.res);
-    }
-
-    @Mutation(() => String)
-    async logout(@Context() Context: { res: Response }) {
-        return this.authService.logout(Context.res);
-    }
-
-    @Mutation(() => String)
-    async refreshToken(@Context() context: { req: Request; res: Response }) {
-        console.log('refreshToken');
-        try {
-            return this.authService.refreshToken(context.req, context.res);
-        } catch (err) {
-            throw new BadRequestException(err.message);
-        }
-    }
+  }
 }
