@@ -33,20 +33,20 @@ const pubSub = new RedisPubSub({
         tokenService: TokenService,
       ) => {
         return {
-          installSubcriptionHandlers: true,
-          plaground: true,
+          installSubscriptionHandlers: true,
+          playground: true,
           autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
           sortSchema: true,
-          subscription: {
+          subscriptions: {
             'graphql-ws': true,
-            'subscription-transport-ws': true,
+            'subscriptions-transport-ws': true,
           },
           onConnect: (connectionParams) => {
             const token = tokenService.extractToken(connectionParams);
+
             if (!token) {
               throw new Error('Token not provided');
             }
-
             const user = tokenService.validateToken(token);
             if (!user) {
               throw new Error('Invalid token');

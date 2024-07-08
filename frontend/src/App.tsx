@@ -5,7 +5,7 @@ function App() {
   return (
     <MantineProvider>
       <Card>
-        <Text>Hello World</Text>
+        <Text>Hello</Text>
       </Card>
     </MantineProvider>
   );

@@ -7,7 +7,7 @@ function Home() {
     <MainLayout>
       <>
         <Sidebar />
-        <>HOME PAGE</>
+        HOME PAGE
       </>
     </MainLayout>
   );
