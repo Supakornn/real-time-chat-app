@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Navbar, Center, Tooltip, UnstyledButton, createStyles, Stack, rem } from "@mantine/core";
+import { IconBrandWechat } from "@tabler/icons-react";
 
 const useStyles = createStyles((theme) => {
   return {
@@ -45,6 +46,8 @@ function NavbarLink({ icon: Icon, label, active, onClick }: NavbarLinkProps) {
     </Tooltip>
   );
 }
+
+const mockdata = [{ icon: IconBrandWechat, label: "Chatrooms" }];
 
 function Sidebar() {
   return <div>Sidebar</div>;
