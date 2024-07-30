@@ -12,6 +12,7 @@ import { useGeneralStore } from "../stores/generalStore";
 import { useUserStore } from "../stores/userStore";
 import { useMutation } from "@apollo/client";
 import { LOGIN_USER } from "../graphql/mutations/Login";
+import { LOGOUT_USER } from "../graphql/mutations/Logout";
 
 const useStyles = createStyles((theme) => {
   return {
@@ -77,7 +78,7 @@ function Sidebar() {
   const setUser = useUserStore((state) => state.setUser);
 
   const toggleLoginModal = useGeneralStore((state) => state.toggleLoginModal);
-  const [logoutUser, { loading, error }] = useMutation(LOGIN_USER, {
+  const [logoutUser, { loading, error }] = useMutation(LOGOUT_USER, {
     onCompleted: () => {
       toggleLoginModal();
     }
