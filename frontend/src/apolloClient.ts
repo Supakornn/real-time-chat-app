@@ -49,7 +49,7 @@ const wsLink = new WebSocketLink({
   }
 });
 
-const errorLink = onError(({ graphQLErrors, operation, forward }) => {
+const errorLink = onError(({graphQLErrors, operation, forward }) => {
   for (const err of graphQLErrors) {
     if (err.extensions.code === "UNAUTHENTICATED" && retryCount < maxRetry) {
       retryCount++;
