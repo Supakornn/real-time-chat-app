@@ -41,6 +41,7 @@ function ProfileSettings() {
   });
 
   const handleSave = async () => {
+    if (form.validate().hasErrors) return;
     await updateProfile().then(() => {
       toggleProfileSettingModal();
     });
@@ -52,7 +53,7 @@ function ProfileSettings() {
       onClose={toggleProfileSettingModal}
       title="Profile Settings"
     >
-      <form onSubmit={form.onSubmit(() => updateProfile())}>
+      <form onSubmit={form.onSubmit(() => handleSave())}>
         <Group
           pos="relative"
           w={100}
@@ -96,6 +97,7 @@ function ProfileSettings() {
           onChange={(event) => {
             form.setFieldValue("fullname", event.currentTarget.value);
           }}
+          error={form.errors.fullname}
         />
         <Flex gap="md" mt="sm">
           <Button onClick={handleSave}>Save</Button>
