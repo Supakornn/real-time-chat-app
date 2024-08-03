@@ -1,7 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 
+<<<<<<< HEAD
 import { Navbar, Center, Tooltip, UnstyledButton, createStyles, Stack, rem } from "@mantine/core";
 import { IconBrandWechat } from "@tabler/icons-react";
+=======
+import { Center, Navbar, Stack, Tooltip, UnstyledButton, createStyles, rem } from "@mantine/core";
+import {
+  IconBrandMessenger,
+  IconBrandWechat,
+  IconLogin,
+  IconLogout,
+  IconUser
+} from "@tabler/icons-react";
+import { useGeneralStore } from "../stores/generalStore";
+import { useUserStore } from "../stores/userStore";
+import { useMutation } from "@apollo/client";
+import { LOGIN_USER } from "../graphql/mutations/Login";
+import { LOGOUT_USER } from "../graphql/mutations/Logout";
+>>>>>>> ac3dc40621eceaca74732c370be9105e235a3dfa
 
 const useStyles = createStyles((theme) => {
   return {
@@ -50,7 +66,67 @@ function NavbarLink({ icon: Icon, label, active, onClick }: NavbarLinkProps) {
 const mockdata = [{ icon: IconBrandWechat, label: "Chatrooms" }];
 
 function Sidebar() {
-  return <div>Sidebar</div>;
+  const toggleProfileSettingModal = useGeneralStore((state) => state.toggleProfileSettingsModal);
+  const [active, setActive] = useState(0);
+
+  const links = mockdata.map((link, index) => (
+    <NavbarLink
+      {...link}
+      key={link.label}
+      active={index === active}
+      onClick={() => setActive(index)}
+    />
+  ));
+
+  const userId = useUserStore((state) => state.id);
+  const user = useUserStore((state) => state);
+  const setUser = useUserStore((state) => state.setUser);
+
+  const toggleLoginModal = useGeneralStore((state) => state.toggleLoginModal);
+  const [logoutUser, { loading, error }] = useMutation(LOGOUT_USER, {
+    onCompleted: () => {
+      toggleLoginModal();
+    }
+  });
+
+  const handleLogout = async () => {
+    await logoutUser();
+    setUser({
+      id: undefined,
+      fullname: "",
+      avatarUrl: null,
+      email: ""
+    });
+  };
+
+  return (
+    <Navbar fixed zIndex={100} w={rem(100)} p="md">
+      <Center>
+        <IconBrandMessenger type="mark" size={30} />
+      </Center>
+      <Navbar.Section grow mt={50}>
+        <Stack justify="center" spacing={0}>
+          {userId && links}
+        </Stack>
+      </Navbar.Section>
+      <Navbar.Section>
+        <Stack justify="center" spacing={0}>
+          {userId && (
+            <NavbarLink
+              icon={IconUser}
+              label={"Profile(" + user.fullname + ")"}
+              onClick={toggleProfileSettingModal}
+            />
+          )}
+          {userId ? (
+            <NavbarLink icon={IconLogout} label="Logout" onClick={handleLogout} />
+          ) : (
+            <NavbarLink icon={IconLogin} label="Login" onClick={toggleLoginModal} />
+          )}
+        </Stack>
+      </Navbar.Section>
+    </Navbar>
+  );
 }
 
 export default Sidebar;

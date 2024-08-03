@@ -17,7 +17,11 @@
     "@mantine/form": "^6.0.19",
     "@mantine/hooks": "^6.0.19",
     "@mantine/modals": "^6.0.19",
+<<<<<<< HEAD
     "@tabler/icons-react": "^3.10.0",
+=======
+    "@tabler/icons-react": "^3.11.0",
+>>>>>>> ac3dc40621eceaca74732c370be9105e235a3dfa
     "apollo-upload-client": "^18.0.1",
     "graphql": "^16.8.1",
     "react": "^18.2.0",
