@@ -1,5 +1,6 @@
+import { Resolver, Query, Context, Mutation, Args } from '@nestjs/graphql';
 import { UserService } from './user.service';
-import { Resolver, Context, Mutation, Args } from '@nestjs/graphql';
+import { User } from './user.type';
 import { Request } from 'express';
 import { UseGuards } from '@nestjs/common';
 import { GraphqlAuthGuard } from 'src/auth/graphql-auth.guard';
@@ -7,8 +8,6 @@ import { createWriteStream } from 'fs';
 import { join } from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import * as GraphQLUpload from 'graphql-upload/GraphQLUpload.js';
-import { User } from './user.type';
-
 @Resolver()
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
@@ -34,5 +33,20 @@ export class UserResolver {
     const readStream = createReadStream();
     readStream.pipe(createWriteStream(imagePath));
     return imageUrl;
+  }
+
+  @UseGuards(GraphqlAuthGuard)
+  @Query(() => [User])
+  async searchUsers(
+    @Args('fullname') fullname: string,
+    @Context() context: { req: Request },
+  ) {
+    return this.userService.searchUsers(fullname, context.req.user.sub);
+  }
+
+  @UseGuards(GraphqlAuthGuard)
+  @Query(() => [User])
+  getUsersOfChatroom(@Args('chatroomId') chatroomId: number) {
+    return this.userService.getUsersOfChatroom(chatroomId);
   }
 }

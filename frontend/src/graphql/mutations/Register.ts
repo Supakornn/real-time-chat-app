@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from "@apollo/client"
 
 export const REGISTER_USER = gql`
   mutation RegisterUser(
@@ -22,4 +22,4 @@ export const REGISTER_USER = gql`
       }
     }
   }
-`;
+`

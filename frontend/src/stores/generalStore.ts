@@ -1,5 +1,5 @@
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { create } from "zustand"
+import { persist } from "zustand/middleware"
 
 interface GeneralState {
   isProfileSettingsModalOpen: boolean
@@ -11,28 +11,27 @@ interface GeneralState {
 }
 
 export const useGeneralStore = create<GeneralState>()(
-  persist((set) => ({
-    isProfileSettingsModalOpen: false,
-    isLoginModalOpen: false,
-    isCreateRoomModalOpen: false,
+  persist(
+    (set) => ({
+      isProfileSettingsModalOpen: false,
+      isLoginModalOpen: false,
+      isCreateRoomModalOpen: false,
 
-    toggleProfileSettingsModal: () => 
-      set((state) => ({
-        isProfileSettingsModalOpen: !state.isProfileSettingsModalOpen,
-      })),
-    
-    toggleLoginModal: () =>
-      set((state) => ({
-        isLoginModalOpen: !state.isLoginModalOpen
-      })),
-    
-    toggleCreateRoomModal: () =>
-      set((state) => ({
-        isCreateRoomModalOpen: !state.isCreateRoomModalOpen
-      }))
-  }),
+      toggleProfileSettingsModal: () =>
+        set((state) => ({
+          isProfileSettingsModalOpen: !state.isProfileSettingsModalOpen,
+        })),
+      toggleLoginModal: () =>
+        set((state) => ({
+          isLoginModalOpen: !state.isLoginModalOpen,
+        })),
+      toggleCreateRoomModal: () =>
+        set((state) => ({
+          isCreateRoomModalOpen: !state.isCreateRoomModalOpen,
+        })),
+    }),
     {
       name: "general-store",
     }
-  ) 
+  )
 )

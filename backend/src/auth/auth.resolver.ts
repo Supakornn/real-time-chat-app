@@ -1,20 +1,15 @@
-import { Resolver, Mutation, Args, Context, Query } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
 import { LoginResponse, RegisterResponse } from './types';
 import { LoginDto, RegisterDto } from './dto';
 import { BadRequestException, UseFilters } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { GraphQlErrorFilter } from 'src/filters/custom-exception.filters';
+import { GraphQLErrorFilter } from 'src/filters/custom-exception.filter';
 
-@UseFilters(GraphQlErrorFilter)
+@UseFilters(GraphQLErrorFilter)
 @Resolver()
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
-
-  @Query(() => String)
-  async hello() {
-    return 'hello';
-  }
 
   @Mutation(() => RegisterResponse)
   async register(
@@ -23,12 +18,10 @@ export class AuthResolver {
   ) {
     if (registerDto.password !== registerDto.confirmPassword) {
       throw new BadRequestException({
-        confirmPassword: 'Passwords do not match',
+        confirmPassword: 'Password and confirm password are not the same.',
       });
     }
-
     const { user } = await this.authService.register(registerDto, context.res);
-
     return { user };
   }
 
@@ -41,17 +34,20 @@ export class AuthResolver {
   }
 
   @Mutation(() => String)
-  async logout(@Context() Context: { res: Response }) {
-    return this.authService.logout(Context.res);
+  async logout(@Context() context: { res: Response }) {
+    return this.authService.logout(context.res);
   }
 
+  @Query(() => String)
+  async hello() {
+    return 'hello';
+  }
   @Mutation(() => String)
   async refreshToken(@Context() context: { req: Request; res: Response }) {
-    console.log('refreshToken');
     try {
       return this.authService.refreshToken(context.req, context.res);
-    } catch (err) {
-      throw new BadRequestException(err.message);
+    } catch (error) {
+      throw new BadRequestException(error.message);
     }
   }
 }

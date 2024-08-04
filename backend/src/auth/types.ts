@@ -3,12 +3,11 @@ import { User } from 'src/user/user.type';
 
 @ObjectType()
 export class RegisterResponse {
-    @Field(() => User, { nullable: true })
-    user?: User;
+  @Field(() => User, { nullable: true })
+  user?: User;
 }
-
 @ObjectType()
 export class LoginResponse {
-    @Field(() => User)
-    user: User;
+  @Field(() => User)
+  user: User;
 }
