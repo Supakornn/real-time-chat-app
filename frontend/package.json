@@ -20,7 +20,7 @@
     "@mantine/modals": "^6.0.19",
     "@tabler/icons-react": "^2.32.0",
     "apollo-upload-client": "^17.0.0",
-    "graphql": "^16.8.0",
+    "graphql": "^16.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.15.0",
